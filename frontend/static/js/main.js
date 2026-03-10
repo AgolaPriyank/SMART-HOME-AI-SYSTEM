@@ -167,7 +167,9 @@ function renderLogs(logs) {
     }
     
     logs.forEach(l => {
-        const time = new Date(l.timestamp).toLocaleTimeString();
+        // Backend outputs simple ISO string without timezone info since it uses datetime.utcnow
+        // We need to tell Javascript this is UTC time by appending 'Z'
+        const time = new Date(l.timestamp + 'Z').toLocaleTimeString();
         
         // Styling based on trigger
         let triggerBadge = '';
@@ -284,7 +286,8 @@ function updateChart(data) {
     if (!sensorChart) return;
     
     // Extract data
-    const labels = data.map(d => new Date(d.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', second:'2-digit'}));
+    // Backend sends UTC without 'Z'. Append 'Z' to treat as UTC, so the browser converts to local time.
+    const labels = data.map(d => new Date(d.timestamp + 'Z').toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', second:'2-digit'}));
     const temps = data.map(d => d.temperature);
     const hums = data.map(d => d.humidity);
     // Scale light down slightly so it fits reasonably on a secondary axis without dominating visually if lux is 1000
