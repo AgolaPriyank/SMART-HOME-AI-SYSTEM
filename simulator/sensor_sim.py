@@ -53,14 +53,14 @@ def simulate_environment():
                 if response.status_code == 201:
                     result = response.json()
                     if result.get('ai_action_taken'):
-                        print(f"✅ AI Action Triggered: {result['message']}")
+                        print(f"AI Action Triggered: {result['message']}")
                     else:
-                        print("✅ Data accepted.")
+                        print("Data accepted.")
                 else:
-                    print(f"❌ Server Error {response.status_code}: {response.text}")
+                    print(f"Server Error {response.status_code}: {response.text}")
                     
             except requests.exceptions.ConnectionError:
-                print("⚠️ Connection failed. Is the backend running?")
+                print("Connection failed. Is the backend running?")
                 
             # Wait before next tick
             time.sleep(10)
