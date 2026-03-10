@@ -1,4 +1,5 @@
 from flask import Blueprint, jsonify, request
+from flask_login import login_required
 from models import db, Device, SensorData, AutomationLog
 import os
 import sys
@@ -75,6 +76,7 @@ def receive_sensor_data():
         return jsonify({"error": str(e)}), 500
 
 @api_blueprint.route('/sensors/history', methods=['GET'])
+@login_required
 def get_sensor_history():
     limit = request.args.get('limit', 20, type=int)
     # Get latest data, order by desc, limit, then reverse to chronological
@@ -83,11 +85,13 @@ def get_sensor_history():
     return jsonify([d.to_dict() for d in data])
 
 @api_blueprint.route('/devices', methods=['GET'])
+@login_required
 def get_devices():
     devices = Device.query.all()
     return jsonify([d.to_dict() for d in devices])
 
 @api_blueprint.route('/devices/<int:device_id>/toggle', methods=['POST'])
+@login_required
 def toggle_device(device_id):
     device = Device.query.get_or_404(device_id)
     
@@ -112,6 +116,7 @@ def toggle_device(device_id):
     })
 
 @api_blueprint.route('/logs', methods=['GET'])
+@login_required
 def get_logs():
     limit = request.args.get('limit', 10, type=int)
     logs = AutomationLog.query.order_by(AutomationLog.timestamp.desc()).limit(limit).all()

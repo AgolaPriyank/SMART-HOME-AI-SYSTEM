@@ -24,6 +24,13 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
+                    {% if current_user and current_user.is_authenticated %}
+                    <li class="nav-item">
+                        <span class="nav-link text-light me-3">
+                            <i class="fa-solid fa-user-circle"></i> {{ current_user.username }}
+                        </span>
+                    </li>
+                    {% endif %}
                     <li class="nav-item">
                         <span class="nav-link">
                             API Status: <span id="api-status" class="badge bg-secondary">Checking...</span>
@@ -34,6 +41,11 @@
                             AI Engine: <span id="ai-status" class="badge bg-secondary">Checking...</span>
                         </span>
                     </li>
+                    {% if current_user and current_user.is_authenticated %}
+                    <li class="nav-item ms-3">
+                        <a href="{{ url_for('views.logout') }}" class="btn btn-sm btn-outline-light mt-1"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+                    </li>
+                    {% endif %}
                 </ul>
             </div>
         </div>

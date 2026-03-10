@@ -1,7 +1,8 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
+from flask_login import LoginManager
 from config import Config
-from models import db, Device, SensorData, AutomationLog
+from models import db, Device, SensorData, AutomationLog, User
 from routes.api import api_blueprint
 from routes.views import views_blueprint
 import threading
@@ -15,6 +16,15 @@ def create_app():
     
     # Initialize Database
     db.init_app(app)
+    
+    # Initialize Login Manager
+    login_manager = LoginManager()
+    login_manager.login_view = 'views.login'
+    login_manager.init_app(app)
+    
+    @login_manager.user_loader
+    def load_user(id):
+        return User.query.get(int(id))
     
     # Register Blueprints
     app.register_blueprint(api_blueprint, url_prefix='/api')
