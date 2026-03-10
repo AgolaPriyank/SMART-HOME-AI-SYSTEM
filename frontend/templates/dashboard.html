@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row mb-4">
+    <!-- Sensor Data Cards -->
+    <div class="col-md-3">
+        <div class="card text-center shadow-sm h-100 border-0 border-start border-primary border-4">
+            <div class="card-body">
+                <h5 class="card-title text-muted">Temperature</h5>
+                <h2 class="card-text fw-bold text-primary">
+                    <i class="fa-solid fa-temperature-half"></i> <span id="temp-val">--</span> °C
+                </h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center shadow-sm h-100 border-0 border-start border-info border-4">
+            <div class="card-body">
+                <h5 class="card-title text-muted">Humidity</h5>
+                <h2 class="card-text fw-bold text-info">
+                    <i class="fa-solid fa-droplet"></i> <span id="hum-val">--</span> %
+                </h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center shadow-sm h-100 border-0 border-start border-warning border-4">
+            <div class="card-body">
+                <h5 class="card-title text-muted">Light Level (Lux)</h5>
+                <h2 class="card-text fw-bold text-warning">
+                    <i class="fa-regular fa-sun"></i> <span id="light-val">--</span>
+                </h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center shadow-sm h-100 border-0 border-start border-danger border-4">
+            <div class="card-body">
+                <h5 class="card-title text-muted">Motion Status</h5>
+                <h2 class="card-text fw-bold text-danger">
+                    <i class="fa-solid fa-person-running"></i> <span id="motion-val">--</span>
+                </h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row text-center mb-4">
+    <div class="col-12">
+        <small class="text-muted">Last updated: <span id="last-update">Never</span></small>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Devices Panel -->
+    <div class="col-lg-5 mb-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-header bg-white fw-bold">
+                <i class="fa-solid fa-plug"></i> Managed Devices
+                <button class="btn btn-sm btn-outline-secondary float-end" onclick="fetchDevices()"><i class="fa-solid fa-rotate-right"></i> Refresh</button>
+            </div>
+            <div class="card-body p-0">
+                <ul class="list-group list-group-flush" id="device-list">
+                    <!-- Devices will be injected here via JS -->
+                    <li class="list-group-item text-center text-muted py-4">Loading devices...</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <!-- AI Logs Panel -->
+    <div class="col-lg-7 mb-4">
+         <div class="card shadow-sm h-100">
+            <div class="card-header bg-white fw-bold">
+                <i class="fa-solid fa-robot"></i> Automation Logs
+            </div>
+            <div class="card-body p-0" style="max-height: 400px; overflow-y: auto;">
+                <table class="table table-hover table-striped mb-0">
+                    <thead class="table-light sticky-top">
+                        <tr>
+                            <th>Time</th>
+                            <th>Device</th>
+                            <th>Action</th>
+                            <th>Trigger</th>
+                        </tr>
+                    </thead>
+                    <tbody id="log-table-body">
+                        <!-- Logs injected here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Charts Row -->
+<div class="row">
+    <div class="col-12 mb-4">
+        <div class="card shadow-sm">
+            <div class="card-header bg-white fw-bold">
+                <i class="fa-solid fa-chart-line"></i> Historical Sensor Data
+            </div>
+            <div class="card-body">
+                <canvas id="sensorChart" width="400" height="100"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
